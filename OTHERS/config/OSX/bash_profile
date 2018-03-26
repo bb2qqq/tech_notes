@@ -1,0 +1,15 @@
+[[ -s ~/.bashrc ]] && source ~/.bashrc > /dev/null 2>&1
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export CLICOLOR=1
+export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx      # original_tutorial_link:  http://apple.stackexchange.com/questions/33677/how-can-i-configure-mac-terminal-to-have-color-ls-output
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash > /dev/null 2>&1
+fi
+
+# added by Anaconda3 2.4.1 installer
+export PATH="/Users/zen1/anaconda/bin:$PATH"
+
+# added by Miniconda2 3.19.0 installer
+export PATH="/Users/zen1/miniconda2/bin:$PATH"

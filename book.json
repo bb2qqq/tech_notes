@@ -1,0 +1,8 @@
+{
+
+    "plugins": [
+        "-lunr",
+        "search-jieba",
+        "gtoc"
+    ]
+}
