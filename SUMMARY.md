@@ -10,7 +10,6 @@
     * [sed](/LANGUAGES/bash_mania/sed.md)
     * [grep](/LANGUAGES/bash_mania/grep.md)
 
-* [Markdown tutorial](/LANGUAGES/markdown/markdown_tutorial.md)
 
 * [Python](/LANGUAGES/python_mania/readme.md)
     * [Python tutorial](/LANGUAGES/python_mania/python_tutorial.md)
@@ -18,15 +17,19 @@
     * [Python 3 magic](/LANGUAGES/python_mania/python_3_magic.md)
     * [Python 2 magic](/LANGUAGES/python_mania/python_magic.md)
 
+
 * [VIM](/LANGUAGES/vim_mania/readme.md)
     * [vim tutorial](/LANGUAGES/vim_mania/vim_tutorial.md])
     * [vim magic](/LANGUAGES/vim_mania/vim_magic.md)
     * [vim script tutorial](/LANGUAGES/vim_mania/vim_scripts/vim_scripts_tutorial.md)
     * [vim built-in functions](/LANGUAGES/vim_mania/vim_scripts/builtin_functions.md)
 
+
 * [Javascript Tutorial](/LANGUAGES/javascript/tutorial.md)
 
 * [Regex Tutorial](/LANGUAGES/regex/regex_tutorial.md)
+
+* [Markdown tutorial](/LANGUAGES/markdown/markdown_tutorial.md)
 
 ### TOOLS
 * [Git](/UTILITIES/git/readme.md)

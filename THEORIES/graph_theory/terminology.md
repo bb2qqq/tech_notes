@@ -4,13 +4,13 @@
 
 **E**:  edges, unordered pairs of vertices
 
-**directed graph/digraph**:  A graph whose edges have direction. [Picture of digraph.](./pictures/digraph.png)
+**directed graph/digraph**:  A graph whose edges have direction.
 
-**multigraph**:  A graph whose set E allow repeated elements, technically we do that by replacing E with a mulitiset. [Definition of multiset](https://en.wikipedia.org/wiki/Multiset) || [Picture of multigraph.](./pictures/multigraph.png)
+**multigraph**:  A graph whose set E allow repeated elements, technically we do that by replacing E with a mulitiset. [Definition of multiset](https://en.wikipedia.org/wiki/Multiset)
 
-**pseudograph**:  A graph whose edge can connect a vertice to itself(This connection is called a loop). [Picture of pseudograph.](./pictures/pseudograph.png)
+**pseudograph**:  A graph whose edge can connect a vertice to itself(This connection is called a loop).
 
-**hypergraph**:  A graph whose edge can include arbitary vertices(from 1 to inf.). [Picture of hypergraph.](./pictures/hypergraph.png)
+**hypergraph**:  A graph whose edge can include arbitary vertices(from 1 to inf.).
 
 **infinitegraph**:  A graph whose E and V is infinite set.
 

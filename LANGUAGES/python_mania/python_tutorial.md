@@ -164,45 +164,56 @@ property**机理描述**：
 当你使用property()的时候，你实际上获得了Property类的一个实例。Property类在自己的`__get__, __set__, __delete__` descriptor methods里嵌入了`fget, fset, fdel`的逻辑，并用它们来完成相应的`get, set, delete`操作。而你，通过向`property()`传入自定义的`fget[, fset, fdel]`方法，来获得一个间接的自定义descriptor的实例。此外，Property类还提供了`getter, setter, deleter`方法，供property实例使用。它们的作用机理见如下范例：
 
     class Sample(object):
-    		def __init__(self):
-            self._val = 153
+        def __init__(self):
+        self._val = 153
 
         # 我们申请了一个名字"height", 把它的函数主体作为fget参数传给property()
         # property根据此参数， 生成了一个Property的实例
         # Sample把"height"作为key放进自己的`__dict__`里，把上一步生成的Property实例作为相对应的value,
         # 其代码描述是 Sample.__dict__["height"] = Property(fget=height_func_body)
-        # 当我们用Sample类生成一个实例sample，并使用sample.height语句时，根据descriptor机理，在一系列中间过程后，
+        # 当我们用Sample类生成一个实例sample，并使用sample.height语句时，
+        # 根据descriptor机理，在一系列中间过程后，
         # 我们会去获得type(sample).__dict__('height').__get__(sample, type(sample))的值。
         # 所以实际上，我们这儿在调用Property(fget=height_func_body).__get__(sample, type(sample))方法
-        # 我们再去看Property类里的__get__方法，会发现它在边际条件判断后，返回self.fget(sample)的值
-        # 而对于该Property实例而言此处的 fget 就是 height_func_body(一个函数处理逻辑，没有函数名) ，它接受一个参数，并返回该参数的_val属性。
-        # 所以此处，我们会返回sample._val，该实例并没有_val属性，所以返回type(sample).__dict__['_val']的值，也就是153
+        # 我们再去看Property类里的__get__方法，会发现它在边际条件判断后，返回self.fget(sample)的值。
+        # 而对于该Property实例而言此处的 fget 就是 height_func_body(一个函数处理逻辑，没有函数名) ，
+        # 它接受一个参数，并返回该参数的_val属性。
+        # 所以此处，我们会返回sample._val，该实例并没有_val属性，
+        # 所以返回type(sample).__dict__['_val']的值，也就是153
+
         #
         # PS: height_func_body 是指如下代码逻辑，
-        # def ____(arg):       # ____ 用来代替height, 因为height最后指向的实际是@property处理完后的Property实例, 但____也不是此body的函数名，此body有过临时构建函数名，但被消灭了
+        # def ____(arg):
         #     return arg._val
+        # 上面function命名里的____ 用来代替height, 因为height最后指向的实际是@property处理完后的Property实例。
+        # 但____也不是此body的函数名，此body有过临时构建函数名，但被消灭了
+
         @property
         def height(self):
             return self._val
 
 
         # 我们在这儿用的decorator是height.setter，也就是说我们会把此处的function_body传给height.setter，
-        # 把获得的返回值挂载在function_name，也就是"height"上，挂载方式是Sample.__dict__[function_name] = decorate_result
+        # 把获得的返回值挂载在function_name，也就是"height"上，
+        # 挂载方式是Sample.__dict__[function_name] = decorate_result。
         # 此处decorator里的height，实际上是我们之前用@property获得的Property实例。
         # Property实例的setter方法是如何运作的呢？我们可以看到他定义了两个传入参数self, 和fset.
         # 当我们在Property实例里调用此方法时，第一个参数self实际上被指向了这个Property实例自身。
         # setter的逻辑语句只有一行： return type(self)(self.fget, fset, self.fdel, self.__doc__)
-        # type(self)得到的是Property类，向Property类传入self.fget, fset, self.fdel, self.__doc__ 等参数，我们会得到什么呢？
+        # type(self)得到的是Property类，
+        # 向Property类传入self.fget, fset, self.fdel, self.__doc__ 等参数，我们会得到什么呢？
         # Bingo, 一个新Property实例出现了。
-        # 这个新的Property实例拥有原来的Property实例的`fget, fdel, 和 __doc__`属性，同时将`fset`属性替换为此处传向setter的function_body
+        # 这个新的Property实例拥有原来的Property实例的`fget, fdel, 和 __doc__`属性，
+        # 同时将`fset`属性替换为此处传向setter的function_body。
         # 根据Decorator的原理，这个新实例的变量名是"height", "height"还是那个"height"只不过它指示的对象已经发生了变化。
         # 用一个比喻来形容这个过程就是： 张三被克隆了，给克隆体换了一个器官，把原有的张三消灭，管这个新的克隆体叫张三。
         #
         # PS: 从理论上讲，如果之前的Property实例被修改了除`fget, fset, fdel, __doc__`以外的属性，
         # 新获得的Property实例在使用效果上和老实例不是完全等价的。
         # 但我自己做了下实验，发现property实例对attribute修改做了保护，禁止了直接赋值。
-        # 这样可以确保用`getter, setter, deleter`获得的新实例能尽可能地和原实例保持特性一致(因为有方法替换，特性肯定不会完全相同)。
-        # 如果您找到了在Property实例生成后直接修改其属性的方法，请与我电邮联系: juchen.zeng@gmail.com
+        # 这样可以确保用`getter, setter, deleter`获得的新实例能尽可能地和原实例保持特性一致
+        # (因为有方法替换，特性肯定不会完全相同)。
+        # 如果您找到了在Property实例生成后直接修改其属性的方法，请与我电邮联系: zengjuchen@gmail.com
 
         @height.setter
         def height(self, val):
